@@ -55,3 +55,5 @@ class ScoreRecord(models.Model):
 	total_grade = models.DecimalField(max_digits = 4, decimal_places = 2 )
 	def __str__(self):
 		return "%s | %s | %.2f" % (self.student, self.course, self.total_grade)
+
+		

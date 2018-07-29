@@ -24,6 +24,7 @@ urlpatterns = [
 	url(r'^home/', views.home, name='home'),
 	url(r'^cursos/novo/', views.new_course, name='new_course'),
     url(r'^admin/', admin.site.urls),
-    url(r'^cursos/(?P<curso_id>[0-9]+)/', views.manage_course, name = 'manage_course'),
-    url(r'^cursos/(?P<curso_id>[0-9]+)/novoaluno', views.new_student, name = 'new_student'),
+    url(r'^cursos/(?P<curso_id>[0-9]+)/$', views.manage_course, name = 'manage_course'),
+    url(r'^cursos/(?P<curso_id>[0-9]+)/novoaluno/$', views.new_student, name = 'new_student'),
+    url(r'^cursos/(?P<curso_id>[0-9]+)/(?P<student_id>[0-9]+)/$', vies.manage_student, name = 'manage_student')
 ]

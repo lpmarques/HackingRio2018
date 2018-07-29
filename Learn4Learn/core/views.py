@@ -52,9 +52,25 @@ def new_course(request):
 		return HttpResponseRedirect('/home/novo/')
 	return render( request, 'core/new_course.html', { 'form': NewCourse() } )
 
+def manage_course(request, course_id):
+	try:
+		student_list = Student.objects.filter( course = Course.objects.get( id =  int(course_id)) )
+	except Student.DoesNotExist:
+		student_list = {}
+	context = {'student_list': student_list, 'course_id': course_id}
+	return render(request, 'core/course_details.html', context)
+
 def new_student(request):
 	if request.method == 'POST' and NewStudent(request.POST).is_valid():
 		student = Student(name = request.POST.get( "name" ))
 		student.save()
 		return HttpResponseRedirect('/home/cursos/(?P<curso_id>[0-9]+)/')
 	return render( request, 'core/new_student.html' { 'form': NewStudent() } )
+
+def manage_student(request):
+	try:
+		grades_list = ScoreRecord.objects.filter( student = Student.objects.get( id = int(student_id), course = Course.objects.get( id = int(course_id) )) )
+	except ScoreRecord.DoesNotExist:
+		grades_list = {}
+	context = {'grades_list': grades_list, 'student_id': student_id, 'course_id': course_id}
+	return render( request, 'core/student_details.html', context)
