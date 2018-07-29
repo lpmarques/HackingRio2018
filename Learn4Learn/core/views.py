@@ -26,11 +26,16 @@ def index(request):
 	if request.method == 'POST' and LoginForm(request.POST).is_valid():
 		#Redireciona para a view responsável por validar o login
 		if login(request.POST.get( "user" ), request.POST.get( "password" ) ):
+			request.session['user'] = request.POST.get( "user" )
 			return HttpResponseRedirect('/home/')
 	return render( request, 'core/login.html', { 'form': LoginForm() } )
 
 def login( _user, _password):
-	return (Teacher(user = _user, password = _password) != None)
+	try:
+		teacher = Teacher.objects.get(user = _user, password = _password)
+		return True
+	except Teacher.DoesNotExist:
+		return False
 	
 def home(request):
 	course_list = Course.objects.all()
@@ -42,8 +47,14 @@ def new_course(request):
 	#Valida o formulário e confere se a foi uma solitação de POST
 	if request.method == 'POST' and NewCourse(request.POST).is_valid():
 		#Cadastra um novo curso
-		course = Course(name = request.POST.get( "name" ))
-		course.professor = Teacher.objects.get(name = "Bruno")
+		course = Course(name = request.POST.get( "name" ), professor = Teacher.objects.get(user = request.session['user']) )
 		course.save()
-		return HttpResponseRedirect('/home/')
+		return HttpResponseRedirect('/home/novo/')
 	return render( request, 'core/new_course.html', { 'form': NewCourse() } )
+
+def new_student(request):
+	if request.method == 'POST' and NewStudent(request.POST).is_valid():
+		student = Student(name = request.POST.get( "name" ))
+		student.save()
+		return HttpResponseRedirect('/home/cursos/(?P<curso_id>[0-9]+)/')
+	return render( request, 'core/new_student.html' { 'form': NewStudent() } )

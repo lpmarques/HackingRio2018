@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<link rel="stylesheet" type="text/css" href="styles.css"> 
+	<title>Link4Learn </title>
+
+</head>
+<body>
+
+	<nav id="menu">
+	    <ul>
+	        <li><a href="#">Home</a></li>
+	        <li><a href="#">Cursos</a></li>
+	        <li><a href="#">Alunos</a></li>
+	        <li><a href="#">Info Curso</a></li>
+	       
+	    </ul>
+	</nav>
+
+	<form action="/home/" method="post">
+	    {% csrf_token %}
+	    {{ form.as_p }}
+	    </br><input type="submit" value="Submit" />
+	</form>
+	
+</body>
+</html>
