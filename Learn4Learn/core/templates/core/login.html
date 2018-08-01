@@ -1,28 +1,56 @@
-<!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-	<link rel="stylesheet" type="text/css" href="styles.css"> 
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <link rel="stylesheet" type="text/css" href="css/reset.css" >
+	<link rel="stylesheet" type="text/css" href="css/estilos.css"> 
 
 	<title>Link4Learn </title>
-
+	<style>
+	body{
+	  margin: 0;
+	  }
+	 #menu{
+	 
+	 }
+	 #menu ul{
+	    margin: 0;
+		background-color: #5F9EA0;
+		list-style: none;
+	 }
+	 #menu ul li{
+	    display: inline;
+	 }
+	 #menu ul li  a{
+	     padding: 5px 10px;
+		 display: inline-block;
+		 
+		 color: white;
+		 text-decoration: nome;
+	 }
+	 
+	 #menu ul li a : hover{
+	 color: #004d00
+	 }
+	</style>
 </head>
 <body>
 
-	<nav id="menu">
-	    <ul>
-	        <li><a href="#">Home</a></li>
-	        <li><a href="#">Cursos</a></li>
-	        <li><a href="#">Alunos</a></li>
-	        <li><a href="#">Info Curso</a></li>
-	       
-	    </ul>
-	</nav>
+<nav id="menu">
+    <ul>
+        <li><a href="/home">Cursos</a></li>
+        <li><a href="#">Alunos</a></li>
+        <li><a href="#">Info Curso</a></li>
+       
+    </ul>
+</nav>
 
-	<form action="/" method="post">
-	    {% csrf_token %}
-	    {{ form.as_p }}
-	    </br><input type="submit" value="Submit" />
-	</form>
+<form action="/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    </br><input type="submit" value="Submit" />
+</form>
+	
 	
 </body>
 </html>

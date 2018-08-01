@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="styles.css"> 
 	<title>Link4Learn </title>
 
@@ -10,15 +10,14 @@
 
 	<nav id="menu">
 	    <ul>
-	        <li><a href="#">Home</a></li>
-	        <li><a href="#">Cursos</a></li>
+	        <li><a href="/home">Cursos</a></li>
 	        <li><a href="#">Alunos</a></li>
 	        <li><a href="#">Info Curso</a></li>
 	       
 	    </ul>
 	</nav>
 
-	<form action="/home/" method="post">
+	<form action="/cursos/{{ course_id }}/novoaluno" method="post">
 	    {% csrf_token %}
 	    {{ form.as_p }}
 	    </br><input type="submit" value="Submit" />

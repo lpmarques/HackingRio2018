@@ -16,20 +16,23 @@ class Teacher(models.Model):
 	password = models.CharField( max_length = 7 )
 	def __str__(self):
 		return self.name
-	
+
 @python_2_unicode_compatible
 class Course(models.Model):
+	id = models.AutoField( primary_key = True)
 	professor = models.ForeignKey( Teacher, on_delete = models.CASCADE )
 	name = models.CharField( max_length = 100 , default = "sem_nome")
 	def __str__(self):
 		return self.name
-		
+
 @python_2_unicode_compatible
 class Skill(models.Model):
-	skill = models.CharField( max_length = 300 )
+	id = models.AutoField( primary_key = True)
+	name = models.CharField( max_length = 300 )
+	course = models.ForeignKey( Course, on_delete = models.CASCADE )
 	def __str__(self):
-		return self.skill
-
+		return self.name
+		
 @python_2_unicode_compatible	
 class SkillIndex(models.Model):
 	skill = models.ForeignKey( Skill, on_delete = models.CASCADE )
@@ -41,8 +44,6 @@ class SkillIndex(models.Model):
 class Student(models.Model):
 	id = models.AutoField( primary_key = True )
 	name = models.CharField( max_length = 100 )
-	user = models.CharField( max_length = 100 )
-	password = models.CharField( max_length = 7 )
 	course = models.ManyToManyField( Course )
 	def __str__(self):
 		return self.name
@@ -55,5 +56,3 @@ class ScoreRecord(models.Model):
 	total_grade = models.DecimalField(max_digits = 4, decimal_places = 2 )
 	def __str__(self):
 		return "%s | %s | %.2f" % (self.student, self.course, self.total_grade)
-
-		

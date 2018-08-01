@@ -7,9 +7,9 @@ from django.template import loader
 
 from django.http import HttpResponseRedirect, HttpResponse
 
-from .forms import LoginForm, NewCourse
+from .forms import *
 
-from models import Teacher, Course
+from models import *
 
 #from .models import *
 
@@ -39,7 +39,6 @@ def login( _user, _password):
 	
 def home(request):
 	course_list = Course.objects.all()
-	template = loader.get_template('core/home.html')
 	context = { 'course_list': course_list}
 	return render(request, 'core/home.html', context)
 
@@ -52,22 +51,61 @@ def new_course(request):
 		return HttpResponseRedirect('/home/novo/')
 	return render( request, 'core/new_course.html', { 'form': NewCourse() } )
 
+def remove_course(request, course_id):
+	try:
+		course = Course.objects.get(id = int( course_id ) )
+		course.delete()
+	except Course.DoesNotExist:
+		return HttpResponseRedirect('/home/')
+	return HttpResponseRedirect('/home/')	
+	
+	
 def manage_course(request, course_id):
 	try:
 		student_list = Student.objects.filter( course = Course.objects.get( id =  int(course_id)) )
 	except Student.DoesNotExist:
 		student_list = {}
-	context = {'student_list': student_list, 'course_id': course_id}
+	try:
+		skill_list = Skill.objects.filter( course = Course.objects.get( id =  int(course_id)) )
+	except Skill.DoesNotExist:
+		skill_list = {}
+	context = {'student_list': student_list, 'course_id': course_id, 'skill_list': skill_list}
 	return render(request, 'core/course_details.html', context)
 
-def new_student(request):
+def new_student(request, curso_id):
 	if request.method == 'POST' and NewStudent(request.POST).is_valid():
 		student = Student(name = request.POST.get( "name" ))
 		student.save()
-		return HttpResponseRedirect('/home/cursos/(?P<curso_id>[0-9]+)/')
-	return render( request, 'core/new_student.html' { 'form': NewStudent() } )
+		student.course.add( Course.objects.get( id =  int(curso_id)) )
+		student.save()
+		return HttpResponseRedirect('/cursos/%s/' % curso_id)
+	return render( request, 'core/new_student.html', { 'form': NewStudent(), 'course_id': curso_id } )
 
-def manage_student(request):
+def remove_student(request, course_id, student_id):
+	try:
+		student = Student.objects.get(id = int( student_id ) )
+		student.course.remove( Course.objects.get( id =  int(course_id)) )
+	except Student.DoesNotExist:
+		return HttpResponseRedirect('/cursos/%s/' % course_id)
+	return HttpResponseRedirect('/cursos/%s/' % course_id)
+	
+def new_skill(request, course_id):
+	if request.method == 'POST' and NewSkill(request.POST).is_valid():
+		skill = Skill( name = request.POST.get( "name" ) )
+		skill.course = Course.objects.get( id =  int(course_id) )
+		skill.save()
+		return HttpResponseRedirect('/cursos/%s/' % course_id)
+	return render( request, 'core/new_skill.html', { 'form': NewSkill(), 'course_id': course_id } )
+
+def remove_skill(request, course_id, skill_id):
+	try:
+		skill = Skill.objects.get(id = int( skill_id ) )
+		skill.delete()
+	except Skill.DoesNotExist:
+		return HttpResponseRedirect('/cursos/%s/' % course_id)
+	return HttpResponseRedirect('/cursos/%s/' % course_id)
+
+def manage_student(request, student_id, course_id):
 	try:
 		grades_list = ScoreRecord.objects.filter( student = Student.objects.get( id = int(student_id), course = Course.objects.get( id = int(course_id) )) )
 	except ScoreRecord.DoesNotExist:

@@ -23,8 +23,12 @@ urlpatterns = [
 	url(r'^login/', views.login, name='login'),
 	url(r'^home/', views.home, name='home'),
 	url(r'^cursos/novo/', views.new_course, name='new_course'),
+	url(r'^cursos/(?P<course_id>[0-9]+)/$', views.manage_course, name = 'manage_course'),
+	url(r'^cursos/(?P<course_id>[0-9]+)/remover/$', views.remove_course, name = 'remove_course'),
+	url(r'^cursos/(?P<course_id>[0-9]+)/competencias/nova', views.new_skill, name = 'new_skill'),
+	url(r'^cursos/(?P<course_id>[0-9]+)/competencias/(?P<skill_id>[0-9]+)/remover', views.remove_skill, name = 'remove_skill'),
+	url(r'^cursos/(?P<course_id>[0-9]+)/alunos/(?P<student_id>[0-9]+)/$', views.manage_student, name = 'manage_student'),
+	url(r'^cursos/(?P<course_id>[0-9]+)/alunos/(?P<student_id>[0-9]+)/remover', views.remove_student, name = 'remove_student'),
+	url(r'^cursos/(?P<curso_id>[0-9]+)?/novoaluno', views.new_student, name = 'new_student'),
     url(r'^admin/', admin.site.urls),
-    url(r'^cursos/(?P<curso_id>[0-9]+)/$', views.manage_course, name = 'manage_course'),
-    url(r'^cursos/(?P<curso_id>[0-9]+)/novoaluno/$', views.new_student, name = 'new_student'),
-    url(r'^cursos/(?P<curso_id>[0-9]+)/(?P<student_id>[0-9]+)/$', vies.manage_student, name = 'manage_student')
 ]
